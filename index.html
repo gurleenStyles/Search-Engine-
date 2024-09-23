@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Search Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e0f0e; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: #fff; /* White background */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background-color: #b59e9b; /* Coral color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #c6a19f; /* Darker coral */
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 5px;
+            background: #eaeaea;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ASK GURLEEN 🎀</h1>
+        <input type="text" id="searchInput" placeholder="Enter your search term...">
+        <button id="searchButton">Search</button>
+        <button id="clearHistory">Clear History</button>
+        <h2>Search History</h2>
+        <ul id="searchHistory"></ul>
+    </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const clearHistoryButton = document.getElementById('clearHistory');
+        const searchHistoryList = document.getElementById('searchHistory');
+        
+        // Load search history from localStorage
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+            history.forEach(term => {
+                addHistoryItem(term);
+            });
+        }
+        
+        // Add a search term to the history list
+        function addHistoryItem(term) {
+            const li = document.createElement('li');
+            li.textContent = term;
+            searchHistoryList.appendChild(li);
+        }
+        
+        // Search button event
+        searchButton.addEventListener('click', () => {
+            const term = searchInput.value.trim();
+            if (term) {
+                // Store the search term in localStorage
+                let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+                history.push(term);
+                localStorage.setItem('searchHistory', JSON.stringify(history));
+                
+                // Clear the input and display the search term
+                searchInput.value = '';
+                addHistoryItem(term);
+            }
+        });
+        
+        // Clear history button event
+        clearHistoryButton.addEventListener('click', () => {
+            localStorage.removeItem('searchHistory');
+            searchHistoryList.innerHTML = ''; // Clear displayed history
+        });
+        
+        // Initial load of history
+        loadHistory();
+    </script>
+</body>
+</html>
